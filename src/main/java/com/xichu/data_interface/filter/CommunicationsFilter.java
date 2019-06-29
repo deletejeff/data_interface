@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @WebFilter(urlPatterns = "/data_receive/*")
@@ -20,15 +21,15 @@ public class CommunicationsFilter implements Filter {
         log.info("++++++++++++++++++++++++destroy++++++++++++++++++++++++");
     }
 
-    public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2) throws IOException, ServletException {
+    public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2) throws IOException {
         log.info("CommunicationsFilter");
         HttpServletRequest request = (HttpServletRequest) arg0;
         log.info("accessURI=" + request.getRequestURI());
-        StringBuffer strBuff = new StringBuffer();
+        StringBuilder strBuff = new StringBuilder();
         InputStreamReader bin;
         BufferedReader reader = null;
         try {
-            bin = new InputStreamReader(request.getInputStream(), "UTF-8");
+            bin = new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8);
             reader = new BufferedReader(bin);
             String line;
             while ((line = reader.readLine()) != null) {
@@ -62,7 +63,7 @@ public class CommunicationsFilter implements Filter {
         }
     }
 
-    public void init(FilterConfig arg0) throws ServletException {
+    public void init(FilterConfig arg0) {
         log.info("++++++++++++++++++++++++init++++++++++++++++++++++++");
     }
 

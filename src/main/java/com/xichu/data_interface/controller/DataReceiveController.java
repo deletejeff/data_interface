@@ -21,13 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/data_receive")
 public class DataReceiveController {
-    @Autowired
-    private DataReceiveService dataReceiveService;
+    private final DataReceiveService dataReceiveService;
+
+    public DataReceiveController(DataReceiveService dataReceiveService) {
+        this.dataReceiveService = dataReceiveService;
+    }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResultMap send(HttpServletRequest request, HttpServletResponse response) {
         try {
-            //请求数据
+            //获取请求数据
             Object obj = request.getAttribute("receiveData");
             String requestData = obj != null ? obj.toString() : "";
             if(StringUtils.isEmpty(request)){
@@ -41,6 +44,7 @@ public class DataReceiveController {
             String md5DigestAsHex = DigestUtils.md5DigestAsHex(str.getBytes());
             log.info(String.format("接收MD5值：%s", dataReceiveBean.getSign()));
             log.info(String.format("后台MD5值：%s", md5DigestAsHex));
+            //校验签名值
             if(!md5DigestAsHex.equals(dataReceiveBean.getSign())){
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
             }
@@ -49,6 +53,7 @@ public class DataReceiveController {
             if (!res){
                 return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
             }
+            //发送数据到终端设备
             res = dataReceiveService.send();
             if(!res){
                 return ResultUtils.fail(ResultEnum.SEND_FAILURE);

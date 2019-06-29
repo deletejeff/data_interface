@@ -4,15 +4,17 @@ import com.xichu.data_interface.bean.DataReceiveBean;
 import com.xichu.data_interface.dao.DataReceiveDao;
 import com.xichu.data_interface.service.DataReceiveService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class DataReceiveServiceImpl implements DataReceiveService {
 
-    @Autowired
-    private DataReceiveDao dataReceiveDao;
+    private final DataReceiveDao dataReceiveDao;
+
+    public DataReceiveServiceImpl(DataReceiveDao dataReceiveDao) {
+        this.dataReceiveDao = dataReceiveDao;
+    }
 
     @Override
     public boolean send() {
