@@ -13,8 +13,8 @@ public class ResultMap {
     }
 
     public ResultMap(ResultEnum resultEnum){
-        this.code = resultEnum.code;
-        this.message = resultEnum.message;
+        this.code = resultEnum.getCode();
+        this.message = resultEnum.getMessage();
     }
     public ResultMap(){}
 }

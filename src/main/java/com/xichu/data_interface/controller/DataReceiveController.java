@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @RestController
@@ -41,7 +42,7 @@ public class DataReceiveController {
             String str = dataReceiveBean.getUserid() + dataReceiveBean.getUsername() + dataReceiveBean.getOrgid() +
                     dataReceiveBean.getMeterCode() + dataReceiveBean.getCounterNum() + dataReceiveBean.getFromTime() +
                     dataReceiveBean.getToTime() + "gasTransDetail";
-            String md5DigestAsHex = DigestUtils.md5DigestAsHex(str.getBytes());
+            String md5DigestAsHex = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
             log.info(String.format("接收MD5值：%s", dataReceiveBean.getSign()));
             log.info(String.format("后台MD5值：%s", md5DigestAsHex));
             //校验签名值
