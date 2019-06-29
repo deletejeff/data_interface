@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+<configuration>
+    <!--<substitutionProperty name="sys.base" value="/home/grg/logs/msg_center"/>-->
+    <substitutionProperty name="sys.base" value="/Users/mc/logs/xichu"/>
+    <!--<substitutionProperty name="sys.base" value="D:/msg_center_logs"/>-->
+    <substitutionProperty name="log.level" value="INFO"/>
+    <!--<substitutionProperty name="log.format" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger %X{sessionId} %X{transId} %X{transName} %X{userId} %m%n"/>-->
+    <substitutionProperty name="log.format" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger %X{transId} %X{transName} %m%n"/>
+    <substitutionProperty name="max.file.size" value="100MB"/>
+    <substitutionProperty name="max.history" value="10"/>
+
+    <!-- 控制台 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                ${log.format}
+            </Pattern>
+        </layout>
+    </appender>
+
+    <!-- 所有 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${sys.base}/xichu.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${sys.base}/%d{yyyyMMdd}/xichu.%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>${max.file.size}</maxFileSize>
+            <MaxHistory>${max.history}</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.format}</pattern>
+        </encoder>
+    </appender>
+    <!-- ERROR -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${sys.base}/xichu_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${sys.base}/%d{yyyyMMdd}/xichu_error.%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>${max.file.size}</maxFileSize>
+            <MaxHistory>${max.history}</MaxHistory>
+        </rollingPolicy>
+        <!-- 配置值输出error级别日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${log.format}</pattern>
+        </encoder>
+    </appender>
+    <!-- 所有 -->
+    <logger name="org.mybatis.spring" additivity="true">
+        <level value="ERROR"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+    <logger name="java.sql" additivity="true">
+        <level value="ERROR"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.springframework" additivity="true">
+        <level value="${log.level}"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.springframework.jdbc.datasource.DataSourceUtils" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root>
+        <level value="${log.level}"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+
+</configuration>
