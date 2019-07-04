@@ -29,12 +29,14 @@ public class JpushClientUtil {
     }
     public static void main(String[] args) {
     	List<String> alias = new ArrayList<>();
-    	alias.add("276");
-    	alias.add("231");
-    	sendToRegistrationId(alias, "测试", "测试信息", "测试信息", "https://www.baidu.com");
+    	alias.add("123");
+//    	alias.add("231");
+//    	sendToRegistrationId(alias, "测试", "测试信息", "测试信息", "https://www.baidu.com");
 //    	sendToRegistrationId2(alias, "测试", "测试信息", "测试信息", "https://www.baidu.com","2018-11-23 17:05:25");
-//    	sendToAllAndroid("测试", "测试信息", "测试信息", "https://www.baidu.com");
+    	sendToAllAndroid("测试", "测试信息", "测试信息", "https://www.baidu.com");
 //    	sendToAllIos("测试", "测试信息", "测试信息", "https://www.baidu.com");
+
+//        sendToAll("测试", "测试信息", "测试信息", "https://www.baidu.com");
 	}
 
     /**
@@ -47,7 +49,7 @@ public class JpushClientUtil {
      * @param extrasparam        扩展字段（通常传跳转的链接）
      * @return 0推送失败，1推送成功
      */
-    private static int sendToRegistrationId(List<String> alias, String notification_title, String msg_title, String msg_content, String extrasparam) {
+    public static int sendToRegistrationId(List<String> alias, String notification_title, String msg_title, String msg_content, String extrasparam) {
         JPushClient jPushClient = new JPushClient(MASTERSECRET, APPKER);
         int result = 0;
         try {

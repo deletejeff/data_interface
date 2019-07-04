@@ -4,6 +4,7 @@ logging:
 server:
   servlet:
     context-path: /data
+  port: 9999
 spring:
   profiles:
     active: dev
@@ -28,7 +29,7 @@ spring:
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 20
       #配置多个英文逗号分隔
-      filter: config
+      #filter: config
       # WebStatFilter配置，说明请参考Druid Wiki，配置_配置WebStatFilter
       #是否启用StatFilter默认值true
       web-stat-filter:

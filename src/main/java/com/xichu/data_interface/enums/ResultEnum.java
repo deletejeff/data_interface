@@ -1,7 +1,5 @@
 package com.xichu.data_interface.enums;
 
-import lombok.Data;
-
 public enum ResultEnum {
     ERROR("-1", "error"),
     PARAM_ERROR("-10001", "param_error"),

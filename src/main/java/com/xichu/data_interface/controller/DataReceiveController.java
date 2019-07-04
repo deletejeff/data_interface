@@ -1,5 +1,6 @@
 package com.xichu.data_interface.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xichu.data_interface.bean.DataReceiveBean;
 import com.xichu.data_interface.bean.ResultMap;
@@ -7,7 +8,6 @@ import com.xichu.data_interface.enums.ResultEnum;
 import com.xichu.data_interface.service.DataReceiveService;
 import com.xichu.data_interface.utils.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +55,7 @@ public class DataReceiveController {
                 return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
             }
             //发送数据到终端设备
-            res = dataReceiveService.send();
+            res = dataReceiveService.send(JSON.toJSONString(dataReceiveBean));
             if(!res){
                 return ResultUtils.fail(ResultEnum.SEND_FAILURE);
             }
