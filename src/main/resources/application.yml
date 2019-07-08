@@ -4,10 +4,10 @@ logging:
 server:
   servlet:
     context-path: /data
-  port: 9999
+  port: 8080
 spring:
   profiles:
-    active: dev
+    active: sit
   datasource:
     druid:
       connect-properties: config.decrypt=false

@@ -49,8 +49,9 @@ public class DataReceiveController {
             if(!md5DigestAsHex.equals(dataReceiveBean.getSign())){
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
             }
+            boolean res;
             //保存数据
-            boolean res = dataReceiveService.save(dataReceiveBean);
+            res = dataReceiveService.save(dataReceiveBean);
             if (!res){
                 return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
             }

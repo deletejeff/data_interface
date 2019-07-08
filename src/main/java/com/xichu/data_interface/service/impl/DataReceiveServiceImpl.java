@@ -24,7 +24,7 @@ public class DataReceiveServiceImpl implements DataReceiveService {
     public boolean send(String data) {
         List<String> alias = new ArrayList<>();
         alias.add("123");
-        log.info("极光推送：设备号【123】, title【】, 消息title【】, 数据：【" + data +"】");
+        log.info("极光推送：设备号【123】, title【aaa】, 消息title【test】, 数据：【" + data +"】");
         return JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", "测试信息", "https://www.baidu.com") > 0;
 //        return JpushClientUtil.sendToAllAndroid("测试", "测试信息", "测试信息", "https://www.baidu.com") > 0;
     }
