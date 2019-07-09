@@ -10,6 +10,7 @@
 			counter_num,
 			from_time,
 			to_time,
+			qrcode_url,
 			data
 		)
 		values (
@@ -20,6 +21,7 @@
 			#{counterNum,jdbcType=VARCHAR},
 			#{fromTime,jdbcType=VARCHAR},
 			#{toTime,jdbcType=VARCHAR},
+			#{qrcodeUrl,jdbcType=VARCHAR},
 			#{data,jdbcType=VARCHAR}
 		)
 	</insert>

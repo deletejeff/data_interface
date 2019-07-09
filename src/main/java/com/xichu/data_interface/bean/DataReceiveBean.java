@@ -37,6 +37,10 @@ public class DataReceiveBean {
      */
     private String toTime;
     /**
+     * 小票二维码地址
+     */
+    private String qrcodeUrl;
+    /**
      * 数据
      */
     private String data;
