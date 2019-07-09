@@ -46,6 +46,13 @@ public class DataReceiveController {
             log.info(String.format("接收MD5值：%s", dataReceiveBean.getSign()));
             log.info(String.format("后台MD5值：%s", md5DigestAsHex));
             String sign = dataReceiveBean.getSign();
+            //校验必填参数
+            if(StringUtils.isEmpty(dataReceiveBean.getUserid()) || StringUtils.isEmpty(dataReceiveBean.getUsername()) ||
+                    StringUtils.isEmpty(dataReceiveBean.getOrgid()) || StringUtils.isEmpty(dataReceiveBean.getMeterCode()) ||
+                    StringUtils.isEmpty(dataReceiveBean.getCounterNum()) || StringUtils.isEmpty(dataReceiveBean.getFromTime()) ||
+                    StringUtils.isEmpty(dataReceiveBean.getToTime())){
+                return ResultUtils.fail(ResultEnum.PARAM_ERROR);
+            }
             //校验签名值
             if(StringUtils.isEmpty(sign) || !md5DigestAsHex.toUpperCase().equals(sign.toUpperCase())){
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
