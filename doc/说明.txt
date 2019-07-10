@@ -1,3 +1,4 @@
+centOS7.2 开通8080防火墙
 检验防火墙是否启动
 输入命令 "  firewall-cmd --state " 如果出现如图所示的这种情况说明正在运行，如果没有正在运行需要执行命令" systemctl start firewalld "开启防火墙服务
 firewall-cmd --state
@@ -14,7 +15,7 @@ firewall-cmd --zone=public --query-port=8080/tcp
 
 
 解决方案：
-
+mysql8修改低版本mysql_native_password加密
     ALTER USER 'root'@'localhost' IDENTIFIED BY 'password' PASSWORD EXPIRE NEVER; #修改加密规则 
    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; #更新一下用户的密码 
 
@@ -27,10 +28,14 @@ create user 'root'@'%' identified by 'root1234';
 
 create user 'xichu'@'%' identified by 'xichu123';
 
-grant privileges on xichu.* to 'xichu'@'%' IDENTIFIED BY 'xichu123';
+//grant privileges on xichu.* to 'xichu'@'%' IDENTIFIED BY 'xichu123';
 grant all privileges on xichu to xichu@'%';
 flush privileges;
 
+
+centOS不能使用ifconfig、netstat命令
+安装包
+yum install net-tools
 
 Centos7.2安装mysql8
 https://www.cnblogs.com/guigushanren/p/10182719.html

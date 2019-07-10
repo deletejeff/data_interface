@@ -1,3 +1,0 @@
-2019-07-08T19:07:17.046873Z 0 [System] [MY-013169] [Server] /usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/bin/mysqld (mysqld 8.0.15) initializing of server in progress as process 3188
-2019-07-08T19:07:19.795242Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: kk6Qe0WvCg?q
-2019-07-08T19:07:21.593931Z 0 [System] [MY-013170] [Server] /usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/bin/mysqld (mysqld 8.0.15) initializing of server has completed
