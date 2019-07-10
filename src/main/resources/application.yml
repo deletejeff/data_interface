@@ -4,7 +4,7 @@ logging:
 server:
   servlet:
     context-path: /data
-  port: 8080
+#  port: 8080
 spring:
   profiles:
     active: sit
