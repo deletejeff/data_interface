@@ -1,0 +1,36 @@
+检验防火墙是否启动
+输入命令 "  firewall-cmd --state " 如果出现如图所示的这种情况说明正在运行，如果没有正在运行需要执行命令" systemctl start firewalld "开启防火墙服务
+firewall-cmd --state
+
+ 检查8080端口是否被防火墙开启
+firewall-cmd --permanent --zone=public --list-ports
+开启8080端口
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+重新启动防火墙
+firewall-cmd --reload
+验证开启的8080端口是否生效
+firewall-cmd --zone=public --query-port=8080/tcp
+
+
+
+解决方案：
+
+    ALTER USER 'root'@'localhost' IDENTIFIED BY 'password' PASSWORD EXPIRE NEVER; #修改加密规则 
+   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; #更新一下用户的密码 
+
+   FLUSH PRIVILEGES; #刷新权限 
+
+再重置下密码：alter user 'root'@'localhost' identified by 'root';
+
+
+create user 'root'@'%' identified by 'root1234';
+
+create user 'xichu'@'%' identified by 'xichu123';
+
+grant privileges on xichu.* to 'xichu'@'%' IDENTIFIED BY 'xichu123';
+grant all privileges on xichu to xichu@'%';
+flush privileges;
+
+
+Centos7.2安装mysql8
+https://www.cnblogs.com/guigushanren/p/10182719.html

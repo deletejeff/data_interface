@@ -1,0 +1,13 @@
+CREATE TABLE `data_receive` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户id',
+  `username` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户名',
+  `orgid` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '调用接口的机构号，JK：金卡，XF：先锋',
+  `meter_code` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户表号',
+  `counter_num` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '柜台号',
+  `from_time` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '开始时间',
+  `to_time` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '结束时间',
+  `qrcode_url` varchar(400) COLLATE utf8mb4_bin DEFAULT NULL,
+  `data` varchar(8000) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
