@@ -14,7 +14,7 @@ spring:
       #连接池配置(通常来说，只需要修改initialSize、minIdle、maxActive
       # 如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。分库分表较多的数据库，建议配置为false。removeabandoned不建议在生产环境中打开如果用SQL Server，建议追加配置)
       initial-size: 1
-      max-active: 20
+      max-active: 12
       min-idle: 1
       # 配置获取连接等待超时的时间
       max-wait: 60000
@@ -51,6 +51,7 @@ spring:
         reset-enable: true
         login-username: xichu
         login-password: xichu123
+#      connection-error-retry-attempts: 3
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

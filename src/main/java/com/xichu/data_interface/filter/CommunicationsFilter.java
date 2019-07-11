@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xichu.data_interface.bean.ResultMap;
 import com.xichu.data_interface.enums.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -22,8 +23,8 @@ public class CommunicationsFilter implements Filter {
     }
 
     public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2) throws IOException {
-        log.info("CommunicationsFilter");
         HttpServletRequest request = (HttpServletRequest) arg0;
+        MDC.put("sessionId",request.getSession().getId());
         log.info("accessURI=" + request.getRequestURI());
         StringBuilder strBuff = new StringBuilder();
         InputStreamReader bin;

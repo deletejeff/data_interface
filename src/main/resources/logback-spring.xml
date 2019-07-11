@@ -6,7 +6,7 @@
     <!--<substitutionProperty name="sys.base" value="D:/msg_center_logs"/>-->
     <substitutionProperty name="log.level" value="INFO"/>
     <!--<substitutionProperty name="log.format" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger %X{sessionId} %X{transId} %X{transName} %X{userId} %m%n"/>-->
-    <substitutionProperty name="log.format" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger %X{transId} %X{transName} %m%n"/>
+    <substitutionProperty name="log.format" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger %X{sessionId} %X{transId} %X{transName} %m%n"/>
     <substitutionProperty name="max.file.size" value="100MB"/>
     <substitutionProperty name="max.history" value="10"/>
 

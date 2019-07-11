@@ -1,6 +1,7 @@
 package com.xichu.data_interface.service.impl;
 
 import com.xichu.data_interface.bean.DataReceiveBean;
+import com.xichu.data_interface.common.PropsUtil;
 import com.xichu.data_interface.dao.DataReceiveDao;
 import com.xichu.data_interface.service.DataReceiveService;
 import com.xichu.data_interface.utils.JpushClientUtil;
@@ -21,12 +22,63 @@ public class DataReceiveServiceImpl implements DataReceiveService {
     }
 
     @Override
-    public boolean send(String data) {
+    public boolean send(String data, String orgid, String counterNum) {
         List<String> alias = new ArrayList<>();
-        alias.add("123");
-        log.info("极光推送：设备号【123】, title【aaa】, 消息title【test】, 数据：【" + data +"】");
-        return JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", "测试信息", "https://www.baidu.com") > 0;
+        if(PropsUtil.JK.equals(orgid)){
+            if(PropsUtil.JK_COUNTER_NUM1.equals(counterNum)){
+                alias.add(PropsUtil.SN1);
+            }else if(PropsUtil.JK_COUNTER_NUM2.equals(counterNum)){
+                alias.add(PropsUtil.SN2);
+            }else if(PropsUtil.JK_COUNTER_NUM3.equals(counterNum)){
+                alias.add(PropsUtil.SN3);
+            }else if(PropsUtil.JK_COUNTER_NUM4.equals(counterNum)){
+                alias.add(PropsUtil.SN4);
+            }else if(PropsUtil.JK_COUNTER_NUM5.equals(counterNum)){
+                alias.add(PropsUtil.SN5);
+            }else if(PropsUtil.JK_COUNTER_NUM6.equals(counterNum)){
+                alias.add(PropsUtil.SN6);
+            }else if(PropsUtil.JK_COUNTER_NUM7.equals(counterNum)){
+                alias.add(PropsUtil.SN7);
+            }else if(PropsUtil.JK_COUNTER_NUM8.equals(counterNum)){
+                alias.add(PropsUtil.SN8);
+            }else if(PropsUtil.JK_COUNTER_NUM9.equals(counterNum)){
+                alias.add(PropsUtil.SN9);
+            }else if(PropsUtil.JK_COUNTER_NUM10.equals(counterNum)){
+                alias.add(PropsUtil.SN10);
+            }
+        }else if(PropsUtil.XF.equals(orgid)){
+            if(PropsUtil.XF_COUNTER_NUM1.equals(counterNum)){
+                alias.add(PropsUtil.SN1);
+            }else if(PropsUtil.XF_COUNTER_NUM2.equals(counterNum)){
+                alias.add(PropsUtil.SN2);
+            }else if(PropsUtil.XF_COUNTER_NUM3.equals(counterNum)){
+                alias.add(PropsUtil.SN3);
+            }else if(PropsUtil.XF_COUNTER_NUM4.equals(counterNum)){
+                alias.add(PropsUtil.SN4);
+            }else if(PropsUtil.XF_COUNTER_NUM5.equals(counterNum)){
+                alias.add(PropsUtil.SN5);
+            }else if(PropsUtil.XF_COUNTER_NUM6.equals(counterNum)){
+                alias.add(PropsUtil.SN6);
+            }else if(PropsUtil.XF_COUNTER_NUM7.equals(counterNum)){
+                alias.add(PropsUtil.SN7);
+            }else if(PropsUtil.XF_COUNTER_NUM8.equals(counterNum)){
+                alias.add(PropsUtil.SN8);
+            }else if(PropsUtil.XF_COUNTER_NUM9.equals(counterNum)){
+                alias.add(PropsUtil.SN9);
+            }else if(PropsUtil.XF_COUNTER_NUM10.equals(counterNum)){
+                alias.add(PropsUtil.SN10);
+            }
+        }
+
+        if(alias.size() > 0){
+            log.info("极光推送：设备号【123】, title【aaa】, 消息title【test】, 数据：【" + data +"】");
+            return JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com") > 0;
 //        return JpushClientUtil.sendToAllAndroid("测试", "测试信息", "测试信息", "https://www.baidu.com") > 0;
+        }else{
+            log.info("通过参数orgid：" + orgid + "，counterNum：" + counterNum + "，未对应上推送设备");
+        }
+        return false;
+
     }
 
     @Override

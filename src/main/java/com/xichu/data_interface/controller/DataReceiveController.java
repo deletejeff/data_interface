@@ -58,19 +58,19 @@ public class DataReceiveController {
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
             }
             boolean res;
-            //保存数据
-            res = dataReceiveService.save(dataReceiveBean);
-            if (!res){
-                return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
-            }
             //发送数据到终端设备
-            res = dataReceiveService.send(JSON.toJSONString(dataReceiveBean));
+            res = dataReceiveService.send(JSON.toJSONString(dataReceiveBean),dataReceiveBean.getOrgid(), dataReceiveBean.getCounterNum());
             if(!res){
                 return ResultUtils.fail(ResultEnum.SEND_FAILURE);
             }
+            //保存数据
+            res = dataReceiveService.save(dataReceiveBean);
+            if (!res) {
+                return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
+            }
             return ResultUtils.success();
         }catch (Exception e){
-            log.error("", e);
+            log.error("系统异常", e);
             return ResultUtils.error();
         }
 
