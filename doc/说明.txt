@@ -39,3 +39,11 @@ yum install net-tools
 
 Centos7.2安装mysql8
 https://www.cnblogs.com/guigushanren/p/10182719.html
+
+编辑/etc/profile
+vi /etc/profile
+export JAVA_HOME=/home/mc/jdk1.8.0_211
+export PATH=$PATH:$JAVA_HOME/bin
+
+
+
