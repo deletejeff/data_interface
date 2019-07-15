@@ -1,6 +1,6 @@
 package com.xichu.data_interface.service.impl;
 
-import com.xichu.data_interface.bean.DataReceiveBean;
+import com.xichu.data_interface.bean.DataPojoBean;
 import com.xichu.data_interface.common.PropsUtil;
 import com.xichu.data_interface.dao.DataReceiveDao;
 import com.xichu.data_interface.service.DataReceiveService;
@@ -23,6 +23,7 @@ public class DataReceiveServiceImpl implements DataReceiveService {
 
     @Override
     public boolean send(String data, String orgid, String counterNum) {
+        boolean res = false;
         List<String> alias = new ArrayList<>();
         if(PropsUtil.JK.equals(orgid)){
             if(PropsUtil.JK_COUNTER_NUM1.equals(counterNum)){
@@ -71,18 +72,22 @@ public class DataReceiveServiceImpl implements DataReceiveService {
         }
 
         if(alias.size() > 0){
-            log.info("极光推送：设备号【123】, title【aaa】, 消息title【test】, 数据：【" + data +"】");
-            return JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com") > 0;
-//        return JpushClientUtil.sendToAllAndroid("测试", "测试信息", "测试信息", "https://www.baidu.com") > 0;
+            for (String s : alias) {
+                log.info("极光推送：设备号【" + s + "】");
+            }
+            res = JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com") > 0;
+//            res = JpushClientUtil.sendToAllAndroid("测试", "测试信息", data, "https://www.baidu.com") > 0;
+            log.info("推送成功");
         }else{
             log.info("通过参数orgid：" + orgid + "，counterNum：" + counterNum + "，未对应上推送设备");
+            res = false;
         }
-        return false;
+        return res;
 
     }
 
     @Override
-    public boolean save(DataReceiveBean dataReceiveBean) {
-        return dataReceiveDao.saveData(dataReceiveBean) > 0;
+    public boolean save(DataPojoBean dataPojoBean) {
+        return dataReceiveDao.saveData(dataPojoBean) > 0;
     }
 }

@@ -1,9 +1,9 @@
 package com.xichu.data_interface.service;
 
-import com.xichu.data_interface.bean.DataReceiveBean;
+import com.xichu.data_interface.bean.DataPojoBean;
 
 public interface DataReceiveService {
     boolean send(String data, String orgid, String counterNum);
 
-    boolean save(DataReceiveBean dataReceiveBean);
+    boolean save(DataPojoBean dataPojoBean);
 }

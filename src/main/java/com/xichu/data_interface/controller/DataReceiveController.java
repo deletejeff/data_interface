@@ -1,7 +1,9 @@
 package com.xichu.data_interface.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xichu.data_interface.bean.DataPojoBean;
 import com.xichu.data_interface.bean.DataReceiveBean;
 import com.xichu.data_interface.bean.ResultMap;
 import com.xichu.data_interface.enums.ResultEnum;
@@ -31,6 +33,7 @@ public class DataReceiveController {
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResultMap send(HttpServletRequest request, HttpServletResponse response) {
         try {
+            String resMessage = null;
             //获取请求数据
             Object obj = request.getAttribute("receiveData");
             String requestData = obj != null ? obj.toString() : "";
@@ -57,18 +60,48 @@ public class DataReceiveController {
             if(StringUtils.isEmpty(sign) || !md5DigestAsHex.toUpperCase().equals(sign.toUpperCase())){
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
             }
+            String sendMsg = JSON.toJSONString(dataReceiveBean);
+            String receiveMsg = JSON.toJSONString(dataReceiveBean.getData());
+            if(!StringUtils.isEmpty(sendMsg) && sendMsg.getBytes().length > 4000){
+                log.info("数据超过4000字节，android设备不能接收，发送的消息长度为：" + sendMsg.length());
+                DataReceiveBean dataReceiveBean2 = new DataReceiveBean();
+                JSONArray jsonArray = new JSONArray();
+                for (Object o : dataReceiveBean.getData()) {
+                    if(JSON.toJSONString(dataReceiveBean2).getBytes().length + o.toString().getBytes().length >= 1500){
+                        break;
+                    }
+                    jsonArray.add(o);
+                    dataReceiveBean2.setData(jsonArray);
+                }
+                dataReceiveBean.setData(dataReceiveBean2.getData());
+                sendMsg = JSON.toJSONString(dataReceiveBean);
+                log.info("截取后的消息长度为：" + sendMsg.length());
+                resMessage = ResultEnum.SEND_TO_LARGE_FAILURE.getMessage();
+            }
+            log.info("发送的消息长度为：" + sendMsg.length());
             boolean res;
             //发送数据到终端设备
-            res = dataReceiveService.send(JSON.toJSONString(dataReceiveBean),dataReceiveBean.getOrgid(), dataReceiveBean.getCounterNum());
+            res = dataReceiveService.send(sendMsg,dataReceiveBean.getOrgid(), dataReceiveBean.getCounterNum());
             if(!res){
                 return ResultUtils.fail(ResultEnum.SEND_FAILURE);
             }
             //保存数据
-            res = dataReceiveService.save(dataReceiveBean);
+            DataPojoBean dataPojoBean = new DataPojoBean();
+            dataPojoBean.setId(dataReceiveBean.getId());
+            dataPojoBean.setUserid(dataReceiveBean.getUserid());
+            dataPojoBean.setUsername(dataReceiveBean.getUsername());
+            dataPojoBean.setOrgid(dataReceiveBean.getOrgid());
+            dataPojoBean.setMeterCode(dataReceiveBean.getMeterCode());
+            dataPojoBean.setCounterNum(dataReceiveBean.getCounterNum());
+            dataPojoBean.setFromTime(dataReceiveBean.getFromTime());
+            dataPojoBean.setToTime(dataReceiveBean.getToTime());
+            dataPojoBean.setQrcodeUrl(dataReceiveBean.getQrcodeUrl());
+            dataPojoBean.setData(receiveMsg);
+            res = dataReceiveService.save(dataPojoBean);
             if (!res) {
                 return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
             }
-            return ResultUtils.success();
+            return ResultUtils.success(resMessage);
         }catch (Exception e){
             log.error("系统异常", e);
             return ResultUtils.error();

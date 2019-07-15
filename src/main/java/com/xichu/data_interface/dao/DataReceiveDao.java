@@ -1,7 +1,7 @@
 package com.xichu.data_interface.dao;
 
-import com.xichu.data_interface.bean.DataReceiveBean;
+import com.xichu.data_interface.bean.DataPojoBean;
 
 public interface DataReceiveDao {
-    int saveData(DataReceiveBean dataReceiveBean);
+    int saveData(DataPojoBean dataPojoBean);
 }

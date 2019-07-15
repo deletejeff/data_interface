@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xichu.data_interface.dao.DataReceiveDao">
-	<insert id="saveData" parameterType="com.xichu.data_interface.bean.DataReceiveBean" useGeneratedKeys="true" keyProperty="id">
+	<insert id="saveData" parameterType="com.xichu.data_interface.bean.DataPojoBean" useGeneratedKeys="true" keyProperty="id">
 		insert into data_receive(
 			userid,
 			username,
