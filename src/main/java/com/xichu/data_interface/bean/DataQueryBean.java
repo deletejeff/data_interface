@@ -1,13 +1,14 @@
 package com.xichu.data_interface.bean;
 
+import com.alibaba.fastjson.JSONArray;
 import lombok.Data;
 
 @Data
-public class DataPojoBean {
+public class DataQueryBean {
     /**
      * 主键id
      */
-    private Integer id;
+    private String id;
     /**
      * 用户id
      */
@@ -43,7 +44,7 @@ public class DataPojoBean {
     /**
      * 数据
      */
-    private String data;
+    private JSONArray data;
     /**
      * 签名
      */

@@ -1,0 +1,93 @@
+Centos7.2安装mysql8
+https://www.cnblogs.com/guigushanren/p/10182719.html
+
+rpm -qa | grep mariadb
+
+rpm -e --nodeps  mariadb mariadb-libs-5.5.44-2.el7.centos.x86_64
+
+rpm -qa | grep -i mysql
+
+rpm -e mysql文件名 # 如果有关联文件，不能直接卸载。可以用一下命令强制卸载：rpm -e --nodeps mysql文件名）
+
+rm /etc/my.cnf
+
+cd /home/mc/
+
+tar -xvf mysql-8.0.15-linux-glibc2.12-x86_64.tar.xz -C /usr/local/
+
+cat /etc/group | grep mysql
+
+cat /etc/passwd | grep mysql
+
+groupadd mysql
+
+useradd -r -g mysql mysql
+
+cd /usr/local/
+
+chown -R mysql:mysql ./
+
+cd mysql-8.0.15-linux-glibc2.12-x86_64/
+
+./bin/mysqld --initialize --user=mysql --basedir=/usr/local/mysql-8.0.15-linux-glibc2.12-x86_64 --datadir=/usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/data
+
+初始化数据库
+
+　　# 如果出现如图所示错误，则说明这是缺少numactl，这个时候如果是Centos就yum -y install numactl就可以解决，然后重新运行上面的initialize命令
+
+chown -R root:root ./
+
+chown -R mysql:mysql data/
+
+cd support-files/
+
+touch my-default.cnf
+
+cp ./my-default.cnf /etc/my.cnf
+
+cd ..
+
+mkdir tmp
+
+chmod 777 ./tmp/
+
+vi /etc/my.cnf
+
+[mysqld]
+basedir=/usr/local/mysql-8.0.15-linux-glibc2.12-x86_64
+datadir=/usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/data
+port=3306
+socket=/usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/tmp/mysql.socket
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+
+加入开机启动项
+cd support-files/
+
+cp mysql.server /etc/init.d/mysqld
+
+chmod 755 /etc/init.d/mysqld
+
+cd ..
+
+chkconfig --add mysqld
+
+#启动服务
+
+cd support-files/
+./mysql.server start --user=mysql
+
+vi /etc/profile
+
+export PATH=$PATH:/usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/bin:/usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/lib
+
+source /etc/profile
+
+ln -s /usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/tmp/mysql.socket /tmp/mysql.sock
+
+mysql -u root -p
+
+#停止服务
+service mysqld stop
+#启动服务
+service mysqld start

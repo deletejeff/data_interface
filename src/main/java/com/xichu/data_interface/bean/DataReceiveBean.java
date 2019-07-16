@@ -1,6 +1,5 @@
 package com.xichu.data_interface.bean;
 
-import com.alibaba.fastjson.JSONArray;
 import lombok.Data;
 
 @Data
@@ -8,7 +7,7 @@ public class DataReceiveBean {
     /**
      * 主键id
      */
-    private Integer id;
+    private String id;
     /**
      * 用户id
      */
@@ -44,7 +43,7 @@ public class DataReceiveBean {
     /**
      * 数据
      */
-    private JSONArray data;
+    private String data;
     /**
      * 签名
      */

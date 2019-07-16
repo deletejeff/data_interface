@@ -7,9 +7,11 @@ import lombok.Data;
 public class ResultMap {
     private String code;
     private String message;
-    public ResultMap(String code, String message){
+    private Object data;
+    public ResultMap(String code, String message, String data){
         this.code = code;
         this.message = message;
+        this.data = data;
     }
 
     public ResultMap(ResultEnum resultEnum){

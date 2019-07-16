@@ -7,6 +7,6 @@ spring:
     username: xichu
     password: xichu123
     url: jdbc:mysql://localhost:3307/xichu?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

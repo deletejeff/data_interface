@@ -1,6 +1,6 @@
 package com.xichu.data_interface.service.impl;
 
-import com.xichu.data_interface.bean.DataPojoBean;
+import com.xichu.data_interface.bean.DataReceiveBean;
 import com.xichu.data_interface.common.PropsUtil;
 import com.xichu.data_interface.dao.DataReceiveDao;
 import com.xichu.data_interface.service.DataReceiveService;
@@ -73,7 +73,7 @@ public class DataReceiveServiceImpl implements DataReceiveService {
 
         if(alias.size() > 0){
             for (String s : alias) {
-                log.info("极光推送：设备号【" + s + "】");
+                log.info("极光推送：设备号【" + s + "】,消息ID：【" + data + "】");
             }
             res = JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com") > 0;
 //            res = JpushClientUtil.sendToAllAndroid("测试", "测试信息", data, "https://www.baidu.com") > 0;
@@ -87,7 +87,12 @@ public class DataReceiveServiceImpl implements DataReceiveService {
     }
 
     @Override
-    public boolean save(DataPojoBean dataPojoBean) {
-        return dataReceiveDao.saveData(dataPojoBean) > 0;
+    public boolean save(DataReceiveBean dataReceiveBean) {
+        return dataReceiveDao.saveData(dataReceiveBean) > 0;
+    }
+
+    @Override
+    public DataReceiveBean queryById(String id) {
+        return dataReceiveDao.queryById(id);
     }
 }

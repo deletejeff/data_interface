@@ -1,17 +1,11 @@
-centOS7.2 开通8080防火墙
-检验防火墙是否启动
-输入命令 "  firewall-cmd --state " 如果出现如图所示的这种情况说明正在运行，如果没有正在运行需要执行命令" systemctl start firewalld "开启防火墙服务
-firewall-cmd --state
+centOS不能使用ifconfig、netstat命令
+安装包
+yum install net-tools
 
- 检查8080端口是否被防火墙开启
-firewall-cmd --permanent --zone=public --list-ports
-开启8080端口
-firewall-cmd --zone=public --add-port=8080/tcp --permanent
-重新启动防火墙
-firewall-cmd --reload
-验证开启的8080端口是否生效
-firewall-cmd --zone=public --query-port=8080/tcp
-
+编辑/etc/profile
+vi /etc/profile
+export JAVA_HOME=/home/mc/jdk1.8.0_211
+export PATH=$PATH:$JAVA_HOME/bin
 
 
 解决方案：
@@ -28,22 +22,14 @@ create user 'root'@'%' identified by 'root1234';
 
 create user 'xichu'@'%' identified by 'xichu123';
 
+create database xichu;
+
 //grant privileges on xichu.* to 'xichu'@'%' IDENTIFIED BY 'xichu123';
-grant all privileges on xichu to xichu@'%';
+grant all privileges on xichu.* to 'xichu'@'%';
 flush privileges;
 
 
-centOS不能使用ifconfig、netstat命令
-安装包
-yum install net-tools
 
-Centos7.2安装mysql8
-https://www.cnblogs.com/guigushanren/p/10182719.html
-
-编辑/etc/profile
-vi /etc/profile
-export JAVA_HOME=/home/mc/jdk1.8.0_211
-export PATH=$PATH:$JAVA_HOME/bin
 
 
 
