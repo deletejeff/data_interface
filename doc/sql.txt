@@ -14,7 +14,7 @@ CREATE TABLE `data_receive` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 
-select id,userid,username,orgid,meter_code,counter_num,from_time,to_time,qrcode_url from data_receive;
+select id,userid,username,orgid,meter_code,counter_num,from_time,to_time,qrcode_url,create_time from data_receive;
 
 SET FOREIGN_KEY_CHECKS = 0;
 delete from data_receive where create_time < date_sub(curdate(), INTERVAL 30 DAY);
