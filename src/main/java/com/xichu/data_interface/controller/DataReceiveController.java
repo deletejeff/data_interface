@@ -107,12 +107,15 @@ public class DataReceiveController {
             //获取请求数据
             Object obj = request.getAttribute("receiveData");
             String requestData = obj != null ? obj.toString() : "";
-            if(StringUtils.isEmpty(request)){
+            if(StringUtils.isEmpty(requestData)){
                 return ResultUtils.fail(ResultEnum.PARAM_ERROR);
             }
             JSONObject jsonObject = JSON.parseObject(requestData);
             String id = jsonObject.getString("id");
             String sign = jsonObject.getString("sign");
+            if(StringUtils.isEmpty(id) || StringUtils.isEmpty(sign)){
+                return ResultUtils.fail(ResultEnum.PARAM_ERROR);
+            }
             String md5DigestAsHex = DigestUtils.md5DigestAsHex((id + md5_param).getBytes(StandardCharsets.UTF_8));
             log.info(String.format("接收MD5值：%s", sign));
             log.info(String.format("后台MD5值：%s", md5DigestAsHex));

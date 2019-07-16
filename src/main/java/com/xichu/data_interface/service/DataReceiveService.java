@@ -8,4 +8,6 @@ public interface DataReceiveService {
     boolean save(DataReceiveBean dataReceiveBean);
 
     DataReceiveBean queryById(String id);
+
+    void deleteHistoryData();
 }

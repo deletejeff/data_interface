@@ -6,4 +6,6 @@ public interface DataReceiveDao {
     int saveData(DataReceiveBean dataReceiveBean);
 
     DataReceiveBean queryById(String id);
+
+    void deleteHistoryData();
 }

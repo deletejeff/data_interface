@@ -86,8 +86,31 @@ source /etc/profile
 ln -s /usr/local/mysql-8.0.15-linux-glibc2.12-x86_64/tmp/mysql.socket /tmp/mysql.sock
 
 mysql -u root -p
+再重置下密码
+alter user 'root'@'localhost' identified by 'root';
+
+create user 'root'@'%' identified by 'root1234';
+
+create user 'xichu'@'%' identified by 'xichu123';
+
+create database xichu;
+
+grant all privileges on xichu.* to 'xichu'@'%';
+flush privileges;
+
+
+设置sql执行的安全模式
+mysql -u xichu -p
+use xichu;
+SET SQL_SAFE_UPDATES = 0;
 
 #停止服务
 service mysqld stop
 #启动服务
 service mysqld start
+
+
+解决方案：
+mysql8修改低版本mysql_native_password加密
+    ALTER USER 'root'@'localhost' IDENTIFIED BY 'password' PASSWORD EXPIRE NEVER; #修改加密规则 
+   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; #更新一下用户的密码 

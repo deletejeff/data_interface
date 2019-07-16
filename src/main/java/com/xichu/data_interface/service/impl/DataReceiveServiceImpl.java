@@ -75,6 +75,7 @@ public class DataReceiveServiceImpl implements DataReceiveService {
             for (String s : alias) {
                 log.info("极光推送：设备号【" + s + "】,消息ID：【" + data + "】");
             }
+//            alias.add("unknown");
             res = JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com") > 0;
 //            res = JpushClientUtil.sendToAllAndroid("测试", "测试信息", data, "https://www.baidu.com") > 0;
             log.info("推送成功");
@@ -94,5 +95,10 @@ public class DataReceiveServiceImpl implements DataReceiveService {
     @Override
     public DataReceiveBean queryById(String id) {
         return dataReceiveDao.queryById(id);
+    }
+
+    @Override
+    public void deleteHistoryData() {
+        dataReceiveDao.deleteHistoryData();
     }
 }

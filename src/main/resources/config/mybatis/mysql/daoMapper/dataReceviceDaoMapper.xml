@@ -31,4 +31,7 @@
 	<select id="queryById" resultType="com.xichu.data_interface.bean.DataReceiveBean">
 		select * from data_receive where id = #{id,jdbcType=VARCHAR}
 	</select>
+    <delete id="deleteHistoryData">
+		delete from data_receive where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY)
+	</delete>
 </mapper>
