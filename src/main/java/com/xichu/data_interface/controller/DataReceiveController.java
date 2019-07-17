@@ -36,7 +36,6 @@ public class DataReceiveController {
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResultMap send(HttpServletRequest request, HttpServletResponse response) {
         try {
-            String resMessage = null;
             //获取请求数据
             Object obj = request.getAttribute("receiveData");
             String requestData = obj != null ? obj.toString() : "";
@@ -54,11 +53,26 @@ public class DataReceiveController {
             log.info(String.format("后台MD5值：%s", md5DigestAsHex));
             String sign = dataReceiveBean.getSign();
             //校验必填参数
-            if(StringUtils.isEmpty(dataReceiveBean.getUserid()) || StringUtils.isEmpty(dataReceiveBean.getUsername()) ||
-                    StringUtils.isEmpty(dataReceiveBean.getOrgid()) || StringUtils.isEmpty(dataReceiveBean.getMeterCode()) ||
-                    StringUtils.isEmpty(dataReceiveBean.getCounterNum()) || StringUtils.isEmpty(dataReceiveBean.getFromTime()) ||
-                    StringUtils.isEmpty(dataReceiveBean.getToTime())){
-                return ResultUtils.fail(ResultEnum.PARAM_ERROR);
+            if(StringUtils.isEmpty(dataReceiveBean.getUserid())){
+                return ResultUtils.fail(ResultEnum.PARAM_USERID_NOTNULL);
+            }
+            if(StringUtils.isEmpty(dataReceiveBean.getUsername())){
+                return ResultUtils.fail(ResultEnum.PARAM_USERNAME_NOTNULL);
+            }
+            if(StringUtils.isEmpty(dataReceiveBean.getOrgid())){
+                return ResultUtils.fail(ResultEnum.PARAM_USERORGID_NOTNULL);
+            }
+            if(StringUtils.isEmpty(dataReceiveBean.getMeterCode())){
+                return ResultUtils.fail(ResultEnum.PARAM_METERCODE_NOTNULL);
+            }
+            if(StringUtils.isEmpty(dataReceiveBean.getCounterNum())){
+                return ResultUtils.fail(ResultEnum.PARAM_COUNTERNUM_NOTNULL);
+            }
+            if(StringUtils.isEmpty(dataReceiveBean.getFromTime())){
+                return ResultUtils.fail(ResultEnum.PARAM_FROMTIME_NOTNULL);
+            }
+            if(StringUtils.isEmpty(dataReceiveBean.getToTime())){
+                return ResultUtils.fail(ResultEnum.PARAM_TOTIME_NOTNULL);
             }
             //校验签名值
             if(StringUtils.isEmpty(sign) || !md5DigestAsHex.toUpperCase().equals(sign.toUpperCase())){
@@ -123,17 +137,20 @@ public class DataReceiveController {
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
             }
             DataReceiveBean dataReceiveBean = dataReceiveService.queryById(id);
-            DataQueryBean dataQueryBean = new DataQueryBean();
-            dataQueryBean.setId(dataReceiveBean.getId());
-            dataQueryBean.setUserid(dataReceiveBean.getUserid());
-            dataQueryBean.setUsername(dataReceiveBean.getUsername());
-            dataQueryBean.setOrgid(dataReceiveBean.getOrgid());
-            dataQueryBean.setMeterCode(dataReceiveBean.getMeterCode());
-            dataQueryBean.setCounterNum(dataReceiveBean.getCounterNum());
-            dataQueryBean.setFromTime(dataReceiveBean.getFromTime());
-            dataQueryBean.setToTime(dataReceiveBean.getToTime());
-            dataQueryBean.setQrcodeUrl(dataReceiveBean.getQrcodeUrl());
-            dataQueryBean.setData(JSONArray.parseArray(dataReceiveBean.getData()));
+            DataQueryBean dataQueryBean = null;
+            if (dataReceiveBean != null) {
+                dataQueryBean = new DataQueryBean();
+                dataQueryBean.setId(dataReceiveBean.getId());
+                dataQueryBean.setUserid(dataReceiveBean.getUserid());
+                dataQueryBean.setUsername(dataReceiveBean.getUsername());
+                dataQueryBean.setOrgid(dataReceiveBean.getOrgid());
+                dataQueryBean.setMeterCode(dataReceiveBean.getMeterCode());
+                dataQueryBean.setCounterNum(dataReceiveBean.getCounterNum());
+                dataQueryBean.setFromTime(dataReceiveBean.getFromTime());
+                dataQueryBean.setToTime(dataReceiveBean.getToTime());
+                dataQueryBean.setQrcodeUrl(dataReceiveBean.getQrcodeUrl());
+                dataQueryBean.setData(JSONArray.parseArray(dataReceiveBean.getData()));
+            }
             return ResultUtils.success(dataQueryBean);
         }catch (Exception e){
             log.error("系统异常", e);
