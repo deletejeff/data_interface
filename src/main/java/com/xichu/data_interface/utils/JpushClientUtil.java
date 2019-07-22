@@ -62,6 +62,7 @@ public class JpushClientUtil {
         } catch (APIConnectionException e) {
             log.error("[极光推送]Connection error. Should retry later. ", e);
         } catch (APIRequestException e) {
+            result = e.getErrorCode();
             log.error("[极光推送]Error response from JPush server. Should review and fix it. ", e);
             log.info("[极光推送]HTTP Status: " + e.getStatus());
             log.info("[极光推送]Error Code: " + e.getErrorCode());

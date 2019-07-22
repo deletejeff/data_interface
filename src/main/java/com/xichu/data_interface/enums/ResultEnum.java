@@ -14,7 +14,9 @@ public enum ResultEnum {
     FAILURE("10001", "failure"),
     SAVE_FAILURE("10002", "保存数据失败，推送成功"),
     SEND_FAILURE("10003", "推送失败"),
-    SEND_TO_LARGE_FAILURE("10004", "安卓设备最大推送消息为4000字节，已截取部分数据推送"),
+    SEND_AUDIENCE_FAILURE("10004", "推送设备不在线，推送失败"),
+    SEND_COUNTERNUM_FAILURE("10005", "counterNum未对应上推送设备"),
+    SEND_TO_LARGE_FAILURE("10006", "安卓设备最大推送消息为4000字节，已截取部分数据推送"),
     SUCCESS("0", "success"),
     ;
     private String code;

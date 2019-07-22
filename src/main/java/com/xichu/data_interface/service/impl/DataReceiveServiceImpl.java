@@ -22,8 +22,8 @@ public class DataReceiveServiceImpl implements DataReceiveService {
     }
 
     @Override
-    public boolean send(String data, String orgid, String counterNum) {
-        boolean res = false;
+    public int send(String data, String orgid, String counterNum) {
+        int res = 0;
         List<String> alias = new ArrayList<>();
         if(PropsUtil.JK.equals(orgid)){
             if(PropsUtil.JK_COUNTER_NUM1.equals(counterNum)){
@@ -76,12 +76,12 @@ public class DataReceiveServiceImpl implements DataReceiveService {
                 log.info("极光推送：设备号【" + s + "】,消息ID：【" + data + "】");
             }
 //            alias.add("unknown");
-            res = JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com") > 0;
+            res = JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com");
 //            res = JpushClientUtil.sendToAllAndroid("测试", "测试信息", data, "https://www.baidu.com") > 0;
             log.info("推送成功");
         }else{
+            res = -1;
             log.info("通过参数orgid：" + orgid + "，counterNum：" + counterNum + "，未对应上推送设备");
-            res = false;
         }
         return res;
 

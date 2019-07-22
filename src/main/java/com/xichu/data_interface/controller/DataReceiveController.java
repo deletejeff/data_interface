@@ -95,14 +95,20 @@ public class DataReceiveController {
 //                log.info("截取后的消息长度为：" + sendMsg.length());
 //                resMessage = ResultEnum.SEND_TO_LARGE_FAILURE.getMessage();
 //            }
-            boolean res;
+            int resCode;
             //发送数据到终端设备
-            res = dataReceiveService.send(sendMsg,dataReceiveBean.getOrgid(), dataReceiveBean.getCounterNum());
-            if(!res){
-                return ResultUtils.fail(ResultEnum.SEND_FAILURE);
+            resCode = dataReceiveService.send(sendMsg,dataReceiveBean.getOrgid(), dataReceiveBean.getCounterNum());
+            if(resCode != 1){
+                if(resCode == 1011){
+                    return ResultUtils.fail(ResultEnum.SEND_AUDIENCE_FAILURE);
+                }else if(resCode == -1){
+                    return ResultUtils.fail(ResultEnum.SEND_COUNTERNUM_FAILURE);
+                }else{
+                    return ResultUtils.fail(String.valueOf(resCode), ResultEnum.SEND_FAILURE.getMessage());
+                }
             }
             //保存数据
-            res = dataReceiveService.save(dataReceiveBean);
+            boolean res = dataReceiveService.save(dataReceiveBean);
             if (!res) {
                 return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
             }

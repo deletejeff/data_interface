@@ -28,6 +28,11 @@ public class ResultUtils {
         log.info("回应数据:" + JSON.toJSONString(resultMap));
         return resultMap;
     }
+    public static ResultMap fail(String resCode, String message){
+        ResultMap resultMap = new ResultMap(resCode, message, null);
+        log.info("回应数据:" + JSON.toJSONString(resultMap));
+        return resultMap;
+    }
     public static ResultMap error(){
         ResultMap resultMap = new ResultMap(ResultEnum.ERROR);
         log.info("回应数据:" + JSON.toJSONString(resultMap));
