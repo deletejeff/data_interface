@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration>
 <configuration>
-    <substitutionProperty name="sys.base" value="/home/mc/logs/xichu"/>
+    <substitutionProperty name="sys.base" value="/home/xichu/logs/xichu"/>
 <!--    <substitutionProperty name="sys.base" value="/Users/mc/logs/xichu"/>-->
     <!--<substitutionProperty name="sys.base" value="D:/msg_center_logs"/>-->
     <substitutionProperty name="log.level" value="INFO"/>

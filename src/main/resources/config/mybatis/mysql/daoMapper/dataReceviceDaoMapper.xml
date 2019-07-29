@@ -28,10 +28,52 @@
 		)
 	</insert>
 
+	<insert id="savePayData" parameterType="com.xichu.data_interface.bean.PayReceiveBean">
+		insert into data_pay(
+			id,
+			userid,
+			username,
+			orgid,
+			meter_code,
+			counter_num,
+			payTime,
+			payNum,
+			unitPrice,
+			payMoney,
+			totalAccountReceivable,
+			totalAccountPayable,
+			opName,
+			invoiceExtractionCode,
+			qrcode_url,
+			data
+		)
+		values (
+			#{id,jdbcType=VARCHAR},
+			#{userid,jdbcType=VARCHAR},
+			#{username,jdbcType=VARCHAR},
+			#{orgid,jdbcType=VARCHAR},
+			#{meterCode,jdbcType=VARCHAR},
+			#{counterNum,jdbcType=VARCHAR},
+			#{payTime,jdbcType=VARCHAR},
+			#{payNum,jdbcType=VARCHAR},
+			#{unitPrice,jdbcType=VARCHAR},
+			#{payMoney,jdbcType=VARCHAR},
+			#{totalAccountReceivable,jdbcType=VARCHAR},
+			#{totalAccountPayable,jdbcType=VARCHAR},
+			#{opName,jdbcType=VARCHAR},
+			#{invoiceExtractionCode,jdbcType=VARCHAR},
+			#{qrcodeUrl,jdbcType=VARCHAR},
+			#{data,jdbcType=VARCHAR}
+		)
+	</insert>
+
 	<select id="queryById" resultType="com.xichu.data_interface.bean.DataReceiveBean">
 		select * from data_receive where id = #{id,jdbcType=VARCHAR}
 	</select>
     <delete id="deleteHistoryData">
-		delete from data_receive where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY)
+		begin
+			delete from data_receive where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY);
+			delete from data_pay where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY);
+		end;
 	</delete>
 </mapper>

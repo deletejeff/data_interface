@@ -1,3 +1,3 @@
 #!/bin/bash
-sh /home/mc/stop.sh
-sh /home/mc/start.sh
+sh /home/xichu/stop.sh
+sh /home/xichu/start.sh

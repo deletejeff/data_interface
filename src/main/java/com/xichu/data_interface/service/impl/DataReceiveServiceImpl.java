@@ -1,6 +1,7 @@
 package com.xichu.data_interface.service.impl;
 
 import com.xichu.data_interface.bean.DataReceiveBean;
+import com.xichu.data_interface.bean.PayReceiveBean;
 import com.xichu.data_interface.common.PropsUtil;
 import com.xichu.data_interface.dao.DataReceiveDao;
 import com.xichu.data_interface.service.DataReceiveService;
@@ -90,6 +91,11 @@ public class DataReceiveServiceImpl implements DataReceiveService {
     @Override
     public boolean save(DataReceiveBean dataReceiveBean) {
         return dataReceiveDao.saveData(dataReceiveBean) > 0;
+    }
+
+    @Override
+    public boolean savePay(PayReceiveBean payReceiveBean) {
+        return dataReceiveDao.savePayData(payReceiveBean) > 0;
     }
 
     @Override

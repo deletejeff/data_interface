@@ -13,8 +13,31 @@ CREATE TABLE `data_receive` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+CREATE TABLE `data_pay` (
+  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
+  `userid` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户id',
+  `username` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户名',
+  `orgid` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '调用接口的机构号，JK：金卡，XF：先锋',
+  `meter_code` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户表号',
+  `counter_num` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '柜台号',
+  `payTime` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '缴费时间',
+  `payNum` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '购气数量',
+  `unitPrice` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '单价',
+  `payMoney` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '购气金额',
+  `totalAccountReceivable` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '合计应收金额',
+  `totalAccountPayable` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '合计实收金额',
+  `opName` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '操作员',
+  `invoiceExtractionCode` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '发票提取码',
+  `qrcode_url` varchar(400) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '二维码',
+  `data` longtext COLLATE utf8mb4_bin COMMENT '数据',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 
 select id,userid,username,orgid,meter_code,counter_num,from_time,to_time,qrcode_url,create_time from data_receive;
+
+select id,userid,username,orgid,meter_code,counter_num,payTime,payNum,unitPrice,payMoney,totalAccountReceivable,totalAccountPayable,opName,invoiceExtractionCode,qrcode_url,create_time from data_pay;
 
 SET FOREIGN_KEY_CHECKS = 0;
 delete from data_receive where create_time < date_sub(curdate(), INTERVAL 30 DAY);

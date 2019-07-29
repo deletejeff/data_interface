@@ -4,7 +4,7 @@
 # @desc: stop data_interface
 # @time: 2019-07-10
 ###########################################################################
-DEPLOY_DIR=/home/mc
+DEPLOY_DIR=/home/xichu
 SERVER_NAME=data_interface-0.0.1-SNAPSHOT
 PIDS=`ps -ef | grep java | grep "${DEPLOY_DIR}" |awk '{print $2}'`
 if [ -z "$PIDS" ]; then

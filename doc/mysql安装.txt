@@ -11,7 +11,7 @@ rpm -e mysql文件名 # 如果有关联文件，不能直接卸载。可以用�
 
 rm /etc/my.cnf
 
-cd /home/mc/
+cd /home/xichu/
 
 tar -xvf mysql-8.0.15-linux-glibc2.12-x86_64.tar.xz -C /usr/local/
 

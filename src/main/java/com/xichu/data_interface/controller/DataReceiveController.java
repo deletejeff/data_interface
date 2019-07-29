@@ -3,13 +3,12 @@ package com.xichu.data_interface.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.xichu.data_interface.bean.DataQueryBean;
-import com.xichu.data_interface.bean.DataReceiveBean;
-import com.xichu.data_interface.bean.ResultMap;
+import com.xichu.data_interface.bean.*;
 import com.xichu.data_interface.enums.ResultEnum;
 import com.xichu.data_interface.service.DataReceiveService;
 import com.xichu.data_interface.utils.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,14 +26,15 @@ import java.util.UUID;
 public class DataReceiveController {
     private final DataReceiveService dataReceiveService;
 
-    private static final String md5_param = "gasTransDetail";
+    private static final String md5_param_query = "gasTransDetail";
+    private static final String md5_param_pay = "gasPay";
 
     public DataReceiveController(DataReceiveService dataReceiveService) {
         this.dataReceiveService = dataReceiveService;
     }
 
-    @RequestMapping(value = "/send", method = RequestMethod.POST)
-    public ResultMap send(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
+    public ResultMap query(HttpServletRequest request, HttpServletResponse response) {
         try {
             //获取请求数据
             Object obj = request.getAttribute("receiveData");
@@ -47,7 +47,7 @@ public class DataReceiveController {
             //签名规则：userid + username + orgid + meterCode + counterNum + fromTime + toTime + “gasTransDetail”
             String str = dataReceiveBean.getUserid() + dataReceiveBean.getUsername() + dataReceiveBean.getOrgid() +
                     dataReceiveBean.getMeterCode() + dataReceiveBean.getCounterNum() + dataReceiveBean.getFromTime() +
-                    dataReceiveBean.getToTime() + md5_param;
+                    dataReceiveBean.getToTime() + md5_param_query;
             String md5DigestAsHex = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
             log.info(String.format("接收MD5值：%s", dataReceiveBean.getSign()));
             log.info(String.format("后台MD5值：%s", md5DigestAsHex));
@@ -79,22 +79,6 @@ public class DataReceiveController {
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
             }
             String sendMsg = dataReceiveBean.getId();
-//            if(!StringUtils.isEmpty(sendMsg) && sendMsg.getBytes().length > 4000){
-//                log.info("数据超过4000字节，android设备不能接收，发送的消息长度为：" + sendMsg.length());
-//                DataReceiveBean dataReceiveBean2 = new DataReceiveBean();
-//                JSONArray jsonArray = new JSONArray();
-//                for (Object o : dataReceiveBean.getData()) {
-//                    if(JSON.toJSONString(dataReceiveBean2).getBytes().length + o.toString().getBytes().length >= 1500){
-//                        break;
-//                    }
-//                    jsonArray.add(o);
-//                    dataReceiveBean2.setData(jsonArray);
-//                }
-//                dataReceiveBean.setData(dataReceiveBean2.getData());
-//                sendMsg = JSON.toJSONString(dataReceiveBean);
-//                log.info("截取后的消息长度为：" + sendMsg.length());
-//                resMessage = ResultEnum.SEND_TO_LARGE_FAILURE.getMessage();
-//            }
             int resCode;
             //发送数据到终端设备
             resCode = dataReceiveService.send(sendMsg,dataReceiveBean.getOrgid(), dataReceiveBean.getCounterNum());
@@ -121,8 +105,8 @@ public class DataReceiveController {
     }
 
 
-    @RequestMapping(value = "/query", method = RequestMethod.POST)
-    public ResultMap query(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/queryById", method = RequestMethod.POST)
+    public ResultMap queryById(HttpServletRequest request, HttpServletResponse response) {
         try {
             //获取请求数据
             Object obj = request.getAttribute("receiveData");
@@ -136,7 +120,7 @@ public class DataReceiveController {
             if(StringUtils.isEmpty(id) || StringUtils.isEmpty(sign)){
                 return ResultUtils.fail(ResultEnum.PARAM_ERROR);
             }
-            String md5DigestAsHex = DigestUtils.md5DigestAsHex((id + md5_param).getBytes(StandardCharsets.UTF_8));
+            String md5DigestAsHex = DigestUtils.md5DigestAsHex((id + md5_param_query).getBytes(StandardCharsets.UTF_8));
             log.info(String.format("接收MD5值：%s", sign));
             log.info(String.format("后台MD5值：%s", md5DigestAsHex));
             if(StringUtils.isEmpty(sign) || !md5DigestAsHex.toUpperCase().equals(sign.toUpperCase())){
@@ -162,7 +146,94 @@ public class DataReceiveController {
             log.error("系统异常", e);
             return ResultUtils.error();
         }
+    }
 
+    @RequestMapping(value = "/pay", method = RequestMethod.POST)
+    public ResultMap pay(HttpServletRequest request, HttpServletResponse response) {
+        try {
+//获取请求数据
+            Object obj = request.getAttribute("receiveData");
+            String requestData = obj != null ? obj.toString() : "";
+            if(StringUtils.isEmpty(request)){
+                return ResultUtils.fail(ResultEnum.PARAM_ERROR);
+            }
+            PayReceiveBean payReceiveBean = JSONObject.parseObject(requestData, PayReceiveBean.class);
+            payReceiveBean.setId(UUID.randomUUID().toString().replaceAll("-",""));
+            //签名规则：userid + username + orgid + meterCode + counterNum + fromTime + toTime + “gasTransDetail”
+            String str = payReceiveBean.getUserid() + payReceiveBean.getUsername() + payReceiveBean.getOrgid() +
+                    payReceiveBean.getMeterCode() + payReceiveBean.getCounterNum() + payReceiveBean.getPayTime() +
+                    payReceiveBean.getPayNum() + payReceiveBean.getUnitPrice() + payReceiveBean.getPayMoney() +
+                    payReceiveBean.getTotalAccountReceivable() + payReceiveBean.getTotalAccountPayable() + payReceiveBean.getOpName() +
+                    payReceiveBean.getInvoiceExtractionCode() + payReceiveBean.getQrcodeUrl() + md5_param_pay;
+            String md5DigestAsHex = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
+            log.info(String.format("接收MD5值为：%s", payReceiveBean.getSign()));
+            log.info(String.format("后台MD5值为：%s", md5DigestAsHex));
+            String sign = payReceiveBean.getSign();
+            //校验必填参数
+            if(StringUtils.isEmpty(payReceiveBean.getUserid())){
+                return ResultUtils.fail(ResultEnum.PARAM_USERID_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getUsername())){
+                return ResultUtils.fail(ResultEnum.PARAM_USERNAME_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getOrgid())){
+                return ResultUtils.fail(ResultEnum.PARAM_USERORGID_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getMeterCode())){
+                return ResultUtils.fail(ResultEnum.PARAM_METERCODE_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getCounterNum())){
+                return ResultUtils.fail(ResultEnum.PARAM_COUNTERNUM_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getPayTime())){
+                return ResultUtils.fail(ResultEnum.PARAM_PAYTIME_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getTotalAccountReceivable())){
+                return ResultUtils.fail(ResultEnum.PARAM_TOTALACCOUNTRECEIVABLE_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getTotalAccountPayable())){
+                return ResultUtils.fail(ResultEnum.PARAM_TOTALACCOUNTPAYABLE_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getOpName())){
+                return ResultUtils.fail(ResultEnum.PARAM_OPNAME_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getInvoiceExtractionCode())){
+                return ResultUtils.fail(ResultEnum.PARAM_INVOICEEXTRACTIONCODE_NOTNULL);
+            }
+            if(StringUtils.isEmpty(payReceiveBean.getQrcodeUrl())){
+                return ResultUtils.fail(ResultEnum.PARAM_QRCODEURL_NOTNULL);
+            }
+            //校验签名值
+            if(StringUtils.isEmpty(sign) || !md5DigestAsHex.toUpperCase().equals(sign.toUpperCase())){
+                return ResultUtils.fail(ResultEnum.SIGN_ERROR);
+            }
+            int resCode;
+            JSONArray jsonArray = JSONArray.parseArray(payReceiveBean.getData());
+            PaySendBean paySendBean = new PaySendBean();
+            BeanUtils.copyProperties(payReceiveBean, paySendBean);
+            paySendBean.setData(jsonArray);
+            String sendMsg = JSON.toJSONString(paySendBean);
+            //发送数据到终端设备
+            resCode = dataReceiveService.send(sendMsg,payReceiveBean.getOrgid(), payReceiveBean.getCounterNum());
+            if(resCode != 1){
+                if(resCode == 1011){
+                    return ResultUtils.fail(ResultEnum.SEND_AUDIENCE_FAILURE);
+                }else if(resCode == -1){
+                    return ResultUtils.fail(ResultEnum.SEND_COUNTERNUM_FAILURE);
+                }else{
+                    return ResultUtils.fail(String.valueOf(resCode), ResultEnum.SEND_FAILURE.getMessage());
+                }
+            }
+            //保存数据
+            boolean res = dataReceiveService.savePay(payReceiveBean);
+            if (!res) {
+                return ResultUtils.fail(ResultEnum.SAVE_FAILURE);
+            }
+            return ResultUtils.success();
+        }catch (Exception e){
+            log.error("系统异常", e);
+            return ResultUtils.error();
+        }
     }
 
     public static void main(String[] args) {
