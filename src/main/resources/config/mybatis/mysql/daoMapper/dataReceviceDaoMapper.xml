@@ -71,9 +71,9 @@
 		select * from data_receive where id = #{id,jdbcType=VARCHAR}
 	</select>
     <delete id="deleteHistoryData">
-		begin
-			delete from data_receive where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY);
-			delete from data_pay where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY);
-		end;
+		delete from data_receive where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY)
+	</delete>
+	<delete id="deleteHistoryPayData">
+		delete from data_pay where create_time <![CDATA[<]]> date_sub(curdate(), INTERVAL 30 DAY)
 	</delete>
 </mapper>

@@ -107,4 +107,9 @@ public class DataReceiveServiceImpl implements DataReceiveService {
     public void deleteHistoryData() {
         dataReceiveDao.deleteHistoryData();
     }
+
+    @Override
+    public void deleteHistoryPayData() {
+        dataReceiveDao.deleteHistoryPayData();
+    }
 }

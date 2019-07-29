@@ -13,4 +13,6 @@ public interface DataReceiveService {
     void deleteHistoryData();
 
     boolean savePay(PayReceiveBean payReceiveBean);
+
+    void deleteHistoryPayData();
 }

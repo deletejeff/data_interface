@@ -11,4 +11,6 @@ public interface DataReceiveDao {
     void deleteHistoryData();
 
     int savePayData(PayReceiveBean payReceiveBean);
+
+    void deleteHistoryPayData();
 }
