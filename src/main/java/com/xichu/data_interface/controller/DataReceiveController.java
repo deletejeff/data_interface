@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xichu.data_interface.bean.*;
+import com.xichu.data_interface.common.PropsUtil;
 import com.xichu.data_interface.enums.ResultEnum;
 import com.xichu.data_interface.service.DataReceiveService;
 import com.xichu.data_interface.utils.ResultUtils;
@@ -121,8 +122,8 @@ public class DataReceiveController {
                 return ResultUtils.fail(ResultEnum.PARAM_ERROR);
             }
             String md5DigestAsHex = DigestUtils.md5DigestAsHex((id + md5_param_query).getBytes(StandardCharsets.UTF_8));
-            log.info(String.format("接收MD5值：%s", sign));
-            log.info(String.format("后台MD5值：%s", md5DigestAsHex));
+//            log.info(String.format("接收MD5值：%s", sign));
+//            log.info(String.format("后台MD5值：%s", md5DigestAsHex));
             if(StringUtils.isEmpty(sign) || !md5DigestAsHex.toUpperCase().equals(sign.toUpperCase())){
                 return ResultUtils.fail(ResultEnum.SIGN_ERROR);
             }
@@ -212,6 +213,13 @@ public class DataReceiveController {
             PaySendBean paySendBean = new PaySendBean();
             BeanUtils.copyProperties(payReceiveBean, paySendBean);
             paySendBean.setData(jsonArray);
+            if(payReceiveBean.getOrgid().equals(PropsUtil.JK)){
+                paySendBean.setInvoiceUrl("http://www.jk.com");
+                paySendBean.setInvoiceDateExpire("30");
+            }else if(payReceiveBean.getOrgid().equals(PropsUtil.XF)){
+                paySendBean.setInvoiceUrl("http://www.xf.com");
+                paySendBean.setInvoiceDateExpire("30");
+            }
             String sendMsg = JSON.toJSONString(paySendBean);
             //发送数据到终端设备
             resCode = dataReceiveService.send(sendMsg,payReceiveBean.getOrgid(), payReceiveBean.getCounterNum());

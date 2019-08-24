@@ -78,7 +78,7 @@ public class DataReceiveServiceImpl implements DataReceiveService {
             }
 //            alias.add("unknown");
             res = JpushClientUtil.sendToRegistrationId(alias, "测试", "测试信息", data, "https://www.baidu.com");
-//            res = JpushClientUtil.sendToAllAndroid("测试", "测试信息", data, "https://www.baidu.com") > 0;
+//            res = JpushClientUtil.sendToAllAndroid("测试", "测试信息", data, "https://www.baidu.com");
             log.info("推送成功");
         }else{
             res = -1;

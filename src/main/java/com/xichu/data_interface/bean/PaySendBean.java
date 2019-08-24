@@ -73,4 +73,12 @@ public class PaySendBean {
      * 签名
      */
     private String sign;
+    /**
+     * 开票网址
+     */
+    private String invoiceUrl;
+    /**
+     * 发票有效天数
+     */
+    private String invoiceDateExpire;
 }

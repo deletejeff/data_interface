@@ -6,6 +6,9 @@ server:
     context-path: /data
 #  port: 8080
 spring:
+  mvc:
+    pathmatch:
+      use-suffix-pattern: true
   profiles:
     active: sit
   datasource:
