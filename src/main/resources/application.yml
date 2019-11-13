@@ -10,7 +10,7 @@ spring:
     pathmatch:
       use-suffix-pattern: true
   profiles:
-    active: sit
+    active: dev
   datasource:
     druid:
       connect-properties: config.decrypt=false
