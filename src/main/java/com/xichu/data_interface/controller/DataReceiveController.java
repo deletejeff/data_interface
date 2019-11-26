@@ -214,10 +214,10 @@ public class DataReceiveController {
             BeanUtils.copyProperties(payReceiveBean, paySendBean);
             paySendBean.setData(jsonArray);
             if(payReceiveBean.getOrgid().equals(PropsUtil.JK)){
-                paySendBean.setInvoiceUrl("http://www.jk.com");
+                paySendBean.setInvoiceUrl("http://jbinvoice.china-goldcard.com:30244/invoice/index.html#/invoice?meterNo=" + paySendBean.getMeterCode() + "&chargeNum=" + paySendBean.getInvoiceExtractionCode());
                 paySendBean.setInvoiceDateExpire("30");
             }else if(payReceiveBean.getOrgid().equals(PropsUtil.XF)){
-                paySendBean.setInvoiceUrl("http://www.xf.com");
+                paySendBean.setInvoiceUrl("http://106.44.247.36:12223/query/" + paySendBean.getInvoiceExtractionCode());
                 paySendBean.setInvoiceDateExpire("30");
             }
             String sendMsg = JSON.toJSONString(paySendBean);
